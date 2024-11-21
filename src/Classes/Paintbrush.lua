@@ -18,7 +18,6 @@ function Paintbrush.new()
 	local self = setmetatable({}, Paintbrush)
 	self._posX = 0
 	self._posY = 0
-	self._radius = 5
 	self._segments = 100
 	self._color = { 0, 0, 0 }
 	self._lines = {}
@@ -33,7 +32,7 @@ function Paintbrush:Update(positionX, positionY, isMouseDown)
 
 	if isMouseDown then
 		if self._lastPosition then
-			Line.new(self._lastPosition.x, self._lastPosition.y, positionX, positionY, self._radius, self._color)
+			Line.new(self._lastPosition.x, self._lastPosition.y, positionX, positionY, _G.Radius, self._color)
 		end
 
 		self._lastPosition = { x = positionX, y = positionY }
@@ -42,22 +41,18 @@ function Paintbrush:Update(positionX, positionY, isMouseDown)
 	end
 end
 
-function Paintbrush:SetRadius(zoom)
-	if zoom > 0 then
-		self._radius = math.min(self._radius + 1, DEFAULT_SETTINGS.MaxSize)
+function Paintbrush:SetRadius(y)
+	if y > 0 then
+		_G.Radius = math.min(_G.Radius + 1, DEFAULT_SETTINGS.MaxSize)
 	else
-		self._radius = math.max(self._radius - 1, DEFAULT_SETTINGS.MinSize)
+		_G.Radius = math.max(_G.Radius - 1, DEFAULT_SETTINGS.MinSize)
 	end
 end
 
 function Paintbrush:Draw()
 	love.graphics.setColor(self._color)
-	love.graphics.circle("fill", self._posX, self._posY, self._radius, self._segments)
+	love.graphics.circle("fill", self._posX, self._posY, _G.Radius, self._segments)
 	love.graphics.setColor(1, 1, 1)
-end
-
-function Paintbrush:Destroy()
-	-- Cleanup logic if needed
 end
 
 return Paintbrush
