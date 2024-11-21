@@ -6,13 +6,19 @@
 local Whiteboard = require("src.Classes.Whiteboard")
 local Paintbrush = require("src.Classes.Paintbrush")
 local Line = require("src.Classes.Line")
+local Eraser = require("src.Classes.Eraser")
 
---// Variables
+--// Global Variables
+_G.Lines = {}
+_G.Radius = 3
+
+--// Local Variables
 local windowWidth, windowHeight = love.graphics.getDimensions()
 
 function love.load()
 	whiteboard = Whiteboard.new()
 	paintbrush = Paintbrush.new()
+	eraser = Eraser.new()
 
 	love.window.setTitle("Flompboard")
 	love.mouse.setVisible(false)
@@ -29,8 +35,11 @@ end
 
 function love.update(deltaTime)
 	local mouseX, mouseY = love.mouse.getPosition()
-	local isMouseDown = love.mouse.isDown(1)
-	paintbrush:Update(mouseX, mouseY, isMouseDown)
+	local isLeftMouseDown = love.mouse.isDown(1)
+	local isRightMouseDown = love.mouse.isDown(2)
+
+	paintbrush:Update(mouseX, mouseY, isLeftMouseDown)
+	eraser:Update(mouseX, mouseY, isRightMouseDown)
 end
 
 function love.draw()
