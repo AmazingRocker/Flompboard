@@ -6,7 +6,6 @@
 
 local Line = {}
 Line.__index = Line
-Line.Lines = {}
 
 function Line.new(x1, y1, x2, y2, radius, color)
 	local self = setmetatable({}, Line)
@@ -14,15 +13,15 @@ function Line.new(x1, y1, x2, y2, radius, color)
 	self._y1 = y1
 	self._x2 = x2
 	self._y2 = y2
-	self._radius = radius or 5
+	self._radius = _G.Radius
 	self._color = color or { 0, 0, 0 }
 
-	table.insert(Line.Lines, self)
+	table.insert(_G.Lines, self)
 	return self
 end
 
 function Line:Draw()
-	for _, line in ipairs(Line.Lines) do
+	for _, line in ipairs(_G.Lines) do
 		love.graphics.setColor(line._color)
 
 		love.graphics.circle("fill", line._x1, line._y1, line._radius)
@@ -34,6 +33,13 @@ function Line:Draw()
 	end
 
 	love.graphics.setColor(1, 1, 1)
+end
+
+function Line:IsNear(x, y, radius)
+	local distanceStart = math.sqrt((x - self._x1) ^ 2 + (y - self._y1) ^ 2)
+	local distanceEnd = math.sqrt((x - self._x2) ^ 2 + (y - self._y2) ^ 2)
+
+	return distanceStart <= radius or distanceEnd <= radius
 end
 
 function Line:Destroy()
