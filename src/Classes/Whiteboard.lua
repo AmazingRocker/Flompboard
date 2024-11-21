@@ -16,8 +16,4 @@ function Whiteboard:Draw()
 	love.graphics.clear(1, 1, 1, 1)
 end
 
-function Whiteboard:Destroy()
-	--
-end
-
 return Whiteboard
